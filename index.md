@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Reset Password - Archibald</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e88e5, #42a5f5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #1e88e5;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 2px solid #ccc;
+      font-size: 16px;
+    }
+
+    input.valid {
+      border-color: green;
+    }
+
+    input.invalid {
+      border-color: red;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #1e88e5;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background: gray;
+      cursor: not-allowed;
+    }
+
+    .msg {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .success { color: green; }
+    .error { color: red; }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2>Nuova Password</h2>
+
+  <input type="password" id="password" placeholder="Nuova password">
+  <input type="password" id="confirm" placeholder="Conferma password">
+
+  <button id="btn" onclick="resetPassword()">Salva password</button>
+
+  <div class="msg" id="msg"></div>
+</div>
+
+<script>
+const SUPABASE_URL = "https://arwquadczxophyjmgujg.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFyd3F1YWRjenhvcGh5am1ndWpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA2MDUwMzgsImV4cCI6MjA3NjE4MTAzOH0.cJvJBdp9BC5ggSi4C8CbFQI0h0BhRsIqvan7AClgZlI";
+
+function getAccessToken() {
+  const hash = window.location.hash.substring(1);
+  const params = new URLSearchParams(hash);
+  return params.get("access_token");
+}
+
+function validate(password, confirm) {
+  if (password.length < 6) {
+    return "La password deve avere almeno 6 caratteri.";
+  }
+  if (password !== confirm) {
+    return "Le password non coincidono.";
+  }
+  return null;
+}
+
+async function resetPassword() {
+  const btn = document.getElementById("btn");
+  const msg = document.getElementById("msg");
+
+  const password = document.getElementById("password").value;
+  const confirm = document.getElementById("confirm").value;
+
+  msg.innerText = "";
+  msg.className = "msg";
+
+  const error = validate(password, confirm);
+
+  if (error) {
+    msg.innerText = error;
+    msg.classList.add("error");
+    return;
+  }
+
+  const access_token = getAccessToken();
+
+  if (!access_token) {
+    msg.innerText = "Token non valido o scaduto.";
+    msg.classList.add("error");
+    return;
+  }
+
+  btn.disabled = true;
+  msg.innerText = "Aggiornamento in corso...";
+
+  try {
+    const res = await fetch(SUPABASE_URL + "/auth/v1/user", {
+      method: "PUT",
+      headers: {
+        "Authorization": "Bearer " + access_token,
+        "apikey": SUPABASE_KEY,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ password: password })
+    });
+
+    if (res.ok) {
+      msg.innerText = "✅ Password aggiornata con successo!";
+      msg.classList.add("success");
+
+      // 🔁 Redirect dopo 3 secondi
+      setTimeout(() => {
+        window.location.href = "https://1812ste.github.io/privacy-archibald/";
+      }, 3000);
+
+    } else {
+      msg.innerText = "Errore durante il reset.";
+      msg.classList.add("error");
+    }
+
+  } catch (e) {
+    msg.innerText = "Errore di connessione.";
+    msg.classList.add("error");
+  }
+
+  btn.disabled = false;
+}
+</script>
+
+</body>
+</html>
