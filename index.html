@@ -2,330 +2,173 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
+  <title>Reset Password - Archibald</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Archibald App</title>
 
   <style>
-    * { box-sizing: border-box; }
-
-    @font-face {
-      font-family: 'FleurDeLeah';
-      src: url('FleurDeLeah-Regular.ttf') format('truetype');
-    }
-
-    html { scroll-behavior: smooth; }
-
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #f5f7fa;
-      color: #333;
-      overflow-x: hidden; /* FIX overflow */
-    }
-
-    .navbar {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: rgba(255,255,255,0.95);
+      background: linear-gradient(135deg, #1e88e5, #42a5f5);
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      padding: 10px 16px; /* FIX overflow */
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      z-index: 1000;
+      height: 100vh;
     }
 
-    .nav-left { display: flex; align-items: center; gap: 10px; }
-    .logo { width: 32px; height: 32px; border-radius: 8px; }
-
-    /* FIX colore titolo */
-    .nav-title { font-family: 'FleurDeLeah', cursive; font-size: 26px; color: #0000FF; }
-
-    .nav-links { display: flex; align-items: center; flex-wrap: wrap; }
-    .nav-links a { margin-left: 12px; text-decoration: none; color: #333; font-size: 14px; }
-    .nav-links a:hover { color: #007BFF; }
-
-    .hero {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 120px 20px 60px;
-      max-width: 1100px;
-      margin: auto;
-      gap: 40px;
-    }
-
-    .hero-text { max-width: 500px; }
-    .hero h1 { font-family: 'Arial', cursive; font-size: 64px; color: #007BFF; }
-    .hero p { font-size: 18px; margin-bottom: 20px; }
-
-    .hero img {
-      width: 100%; max-width: 400px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-
-    .cta-btn {
-      display: inline-block;
-      padding: 18px 30px;
-      background: #ff7a18;
-      color: white;
-      text-decoration: none;
-      border-radius: 12px;
-      font-weight: bold;
-      font-size: 18px;
-    }
-
-    .container { max-width: 1000px; margin: auto; padding: 20px; }
-
-    /* FIX navbar overlap */
-    section { 
-      margin-bottom: 60px;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.6s ease;
-      scroll-margin-top: 90px;
-    }
-
-    section.visible { opacity: 1; transform: translateY(0); }
-
-    /* Titoli principali */
-    h2 { color: #007BFF; }
-
-    /* Titoli funzionalità diversi */
-    .feature-title {
-      font-size: 24px;
-      font-weight: bold;
-      color: #222;
-      margin-bottom: 8px;
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    /* CARD migliorate */
     .card {
       background: white;
-      padding: 20px;
-      border-radius: 14px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-      cursor: pointer;
-      transition: all 0.25s ease;
-      display: block;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .card:hover { 
-      transform: translateY(-6px) scale(1.02);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    }
-
-    .card strong {
-      display: block;
-      font-size: 16px;
-      margin-bottom: 6px;
-      color: #007BFF;
-    }
-
-    .card span {
-      font-size: 14px;
-      color: #555;
-    }
-
-    .screenshots {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .screenshots img { width: 100%; border-radius: 10px; }
-
-    footer {
+      padding: 30px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
       text-align: center;
-      padding: 20px;
-      background: #222;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #1e88e5;
+    }
+
+    input {
+      width: 90%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 2px solid #ccc;
+      font-size: 16px;
+    }
+
+    input.valid {
+      border-color: green;
+    }
+
+    input.invalid {
+      border-color: red;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 50%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #1e88e5;
       color: white;
+      font-size: 16px;
+      cursor: pointer;
     }
 
-    .menu-toggle { display: none; font-size: 24px; cursor: pointer; }
-
-    @media (max-width: 768px) {
-      .hero { flex-direction: column; text-align: center; }
-      .hero h1 { font-size: 42px; }
-
-      .nav-links {
-        position: absolute;
-        top: 60px;
-        right: 0;
-        background: white;
-        flex-direction: column;
-        width: 200px;
-        display: none;
-      }
-
-      .nav-links a { padding: 10px; }
-      .menu-toggle { display: block; }
+    button:disabled {
+      background: gray;
+      cursor: not-allowed;
     }
+
+    .msg {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .success { color: green; }
+    .error { color: red; }
   </style>
 </head>
 
 <body>
 
-<div class="navbar">
-  <div class="nav-left">
-    <img src="icon.png" class="logo">
-    <div class="nav-title">Archibald</div>
-  </div>
+<div class="card">
+  <h2>Nuova Password</h2>
 
-  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+  <input type="password" id="password" placeholder="Nuova password">
+  <input type="password" id="confirm" placeholder="Conferma password">
 
-  <div class="nav-links" id="navLinks">
-    <a href="#home">Home</a>
-    <a href="#features">Funzionalità</a>
-    <a href="#screenshots">Screenshot</a>
-    <a href="#download">Scarica</a>
-    <a href="#contact">Contatti</a>
-  </div>
+  <button id="btn" onclick="resetPassword()">Salva password</button>
+
+  <div class="msg" id="msg"></div>
 </div>
-
-<div class="hero">
-  <div class="hero-text">
-    <h1>Archibald App</h1>
-    <p>Organizza la tua vita in modo semplice, veloce e intelligente.</p>
-    <a class="cta-btn" href="#download">Scarica ora</a>
-  </div>
-  <img src="hero.jpg">
-</div>
-
-<div class="container">
-
-<section id="features">
-  <h2>Funzionalità</h2>
-  <div class="features">
-
-    <a href="#costi" class="card">
-      <strong>CALCOLA COSTI</strong>
-      <span>Dividi equamente e velocemente i costi con i tuoi amici: al RISTORANTE, a CASA o in VACANZA</span>
-    </a>
-
-    <a href="#locali" class="card">
-      <strong>I MIEI LOCALI</strong>
-      <span>Condividi con gli amici un archivio dei Locali frequentati, con dettagli e recensioni</span>
-    </a>
-
-    <a href="#promemoria" class="card">
-      <strong>PROMEMORIA</strong>
-      <span>Promemoria intelligenti con notifiche e voce per non dimenticare nulla</span>
-    </a>
-
-    <a href="#spesa" class="card">
-      <strong>LISTA SPESA</strong>
-      <span>Lista spesa smart. Veloce, semplice e utilizzabile mentre sei al supermercato</span>
-    </a>
-
-    <a href="#ricette" class="card">
-      <strong>COSA CUCINO OGGI</strong>
-      <span>Ricettario e Idee su cosa cucinare, sempre a portata di mano</span>
-    </a>
-
-    <a href="#eventi" class="card">
-      <strong>EVENTI</strong>
-      <span>Gestione eventi con amici.Organizza tutto senza confusione</span>
-    </a>
-
-  </div>
-</section>
-
-<section id="costi">
-  <div class="feature-title">CALCOLA COSTI - Calcola rapidamente i costi tra amici:</div>
-  <h3>- al Ristorante; </h3>quando si è a pranzo o cena in un Ristorante, se qualcuno ordina antipasto, primo e secondo mentre qualcuno ordina solo la pizza, non è giusto che alla cassa paghino la stessa cifra. Ci pensa Archibald in pochi click!
-  <h3>- a Casa</h3>quando si organizza un pranzo o cena a Casa con amici, basta inserire i costi sostenuti da chi ha fatto la spesa e Archibald farà velocemente i conteggi
-  <h3>- in Vacanza</h3>quando sei in vacanza con amici, dividere le spese può essere complicato e fastidioso. Tranquillo...ci pensa Archibald. <br>Questa funzione (condivisibile online) permette di creare una vacanza e di condividerla con i partecipanti. Tutti i costi comuni vengono inseriti di volta in volta. Chiunque può inserire spese. Ad ogni apertura dell'app una notifica segnala gli ultimi costi inseriti con i dettagli. Archibald in tempo reale darà la situazione dei conteggi
-</p>
-</section>
-
-<section id="locali">
-  <div class="feature-title">I MIEI LOCALI - Archivio condiviso dei Locali frequentati con gli amici:</div>
-  <p>- Archivio con recensione e valutazione di ogni Locale frequentato</p>
-  <p>- Possibilità di creare un gruppo di condivisione (tra amici)</p>
-  <p>- Possibilità di far entrare nuovi amici nel gruppo</p>
-  <p>- Filtri di ricerca per una consultazione rapida ed efficace</p>
-</section>
-
-<section id="promemoria">
-  <div class="feature-title">PROMEMORIA - Promemoria intelligenti con inserimento vocale, notifiche, allarmi</div>
-  <p></p>- Promemoria VOCALI (da app o da widget in HomePage) con notifica immediata, per una rapida memorizzazioni di cose da fare
-  <p></p>- Promemoria con scadenza e possibilità di impostare allarme a data e ora desiderati
-  <p></p>- Promemoria permanenti (senza scadenza) per memorizzare informazioni personali utili
-</section>
-
-<section id="spesa">
-  <div class="feature-title">LISTA SPESA - Lista spesa smart con inserimento vocale</div>
-  <p></p>- Aggiunta prodotto VOCALE (da app o da widget in HomePage), per un rapido inserimento di prodotti da acquistare
-  <p></p>- Aggiunta prodotto manuale da app
-  <p></p>- Lista spesa spuntabile (mano a mano che i prodotti vengono aggiunti al carrello)
-
-</section>
-
-<section id="ricette">
-  <div class="feature-title">COSA CUCINO OGGI - Ricettario o lista di pietanze da cucinare (primi, secondi, ecc.):</div>
-  <p></p>- Valido aiuto quando si è a corto di idee su cosa cucinare (basta scorrere la lista delle pietanze inserite)
-  <p></p>- Possibilità di aggiungere la ricetta (o anche solo gli ingredienti) di ogni pietanza
-  <p></p>- Possibilità di CONDIVIDERE facilmente le ricette con amici (WhatsApp, Telegram, email, ecc.)
-  <p></p>- Funzione di ricerca (utile, ad esempio, per inserire un ingrediente e vedere tutte le ricette che lo contengono)
-  <p></p>- Consultazione rapida delle ricette
-
-</section>
-
-<section id="eventi">
-  <div class="feature-title">EVENTI - Gestione Eventi (compleanni, cene, concerti, ecc.) dove serve raccogliere soldi o adesioni:</div>
-  <p></p>- Per ogni Evento, si può creare la lista degli aderenti e spuntarla mano a mano che danno l'adesione o l'eventuale quota di adesione
-  <p></p>- Possibilità di utilizzarla come semplice lista spuntabile per qualsiasi altro utilizzo (ad esempio: "valigia tipo" con la lista delle cose da portar via quando si va in vacanza; ogni oggetto messo in valigia, viene spuntato)
-
-</section>
-
-<section id="screenshots">
-  <h2>Screenshot</h2>
-  <div class="screenshots">
-    <img src="screen1.jpg">
-    <img src="screen2.jpg">
-    <img src="screen3.jpg">
-  </div>
-</section>
-
-<section id="download">
-  <h2>Scarica l'app</h2>
-  <a class="cta-btn" href="#">Scarica da Google Play</a>
-</section>
-
-<section id="contact">
-  <h2>Contatti</h2>
-  <p>Email: 1812ste@gmail.com</p>
-</section>
-
-</div>
-
-<footer>
-  <p>© 2026 Archibald App</p>
-</footer>
 
 <script>
-const sections = document.querySelectorAll('section');
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if(entry.isIntersecting) entry.target.classList.add('visible');
-  });
-});
-sections.forEach(section => observer.observe(section));
+const SUPABASE_URL = "https://arwquadczxophyjmgujg.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFyd3F1YWRjenhvcGh5am1ndWpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA2MDUwMzgsImV4cCI6MjA3NjE4MTAzOH0.cJvJBdp9BC5ggSi4C8CbFQI0h0BhRsIqvan7AClgZlI";
 
-function toggleMenu() {
-  const nav = document.getElementById('navLinks');
-  nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+function getAccessToken() {
+  const hash = window.location.hash.substring(1);
+  const params = new URLSearchParams(hash);
+  return params.get("access_token");
+}
+
+function validate(password, confirm) {
+  if (password.length < 6) {
+    return "La password deve avere almeno 6 caratteri.";
+  }
+  if (password !== confirm) {
+    return "Le password non coincidono.";
+  }
+  return null;
+}
+
+async function resetPassword() {
+  const btn = document.getElementById("btn");
+  const msg = document.getElementById("msg");
+
+  const password = document.getElementById("password").value;
+  const confirm = document.getElementById("confirm").value;
+
+  msg.innerText = "";
+  msg.className = "msg";
+
+  const error = validate(password, confirm);
+
+  if (error) {
+    msg.innerText = error;
+    msg.classList.add("error");
+    return;
+  }
+
+  const access_token = getAccessToken();
+
+  if (!access_token) {
+    msg.innerText = "Token non valido o scaduto.";
+    msg.classList.add("error");
+    return;
+  }
+
+  btn.disabled = true;
+  msg.innerText = "Aggiornamento in corso...";
+
+  try {
+    const res = await fetch(SUPABASE_URL + "/auth/v1/user", {
+      method: "PUT",
+      headers: {
+        "Authorization": "Bearer " + access_token,
+        "apikey": SUPABASE_KEY,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ password: password })
+    });
+
+    if (res.ok) {
+      msg.innerText = "✅ Password aggiornata con successo!";
+      msg.classList.add("success");
+
+      // 🔁 Redirect dopo 3 secondi
+      setTimeout(() => {
+        window.location.href = "https://1812ste.github.io/privacy-archibald/";
+        //window.location.href = "https://1812ste.github.io/privacy-archibald/";
+      }, 3000);
+
+    } else {
+      msg.innerText = "Errore durante il reset.";
+      msg.classList.add("error");
+    }
+
+  } catch (e) {
+    msg.innerText = "Errore di connessione.";
+    msg.classList.add("error");
+  }
+
+  btn.disabled = false;
 }
 </script>
 
